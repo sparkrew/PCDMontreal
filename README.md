@@ -6,7 +6,7 @@ Date: samedi 24 octobre
 
 Lieu: bibliothèque du [campus mil](https://campusmil.umontreal.ca/)
 
-La journée est organisée par [Benoit Baudry](https://github.com/bbaudry/), [Emir Chouchane](https://github.com/emirgc/), [Indiana Delsart](https://www.linkedin.com/in/indiana-delsart/), [Lena MK](https://github.com/lenaMK), [Marion Schneider](https://github.com/noiramschneider)
+La journée est organisée par [Benoit Baudry](https://github.com/bbaudry/), [Emir Chouchane](https://github.com/emirgc/), [Indiana Delsart](https://github.com/LadyDoom), [Lena MK](https://github.com/lenaMK), [Marion Schneider](https://github.com/noiramschneider)
 
 Lien PCD: https://day.processing.org/event/pcd-montreal-2026-64a56e8/
 
