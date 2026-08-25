@@ -1,0 +1,108 @@
+body {
+    margin: 0px;
+    background-color: black;
+
+}
+h1 {
+    color: lawngreen;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 31pt;
+    font-weight: bold;
+    padding-top: 42pt;
+    padding-bottom: 2pt;
+}
+
+h1:hover{
+    color: fuchsia;
+    cursor: default
+}
+h1 {
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 31pt;
+    font-weight: bold;
+    padding-top: 42pt;
+    padding-bottom: 2pt;
+}
+
+h2 {
+    color: fuchsia;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 25pt;
+    font-weight: bold;
+    cursor: default
+}
+h2 a{
+    text-decoration: none;
+    cursor: default;
+    &:hover, &:active { color: orangered; };
+}
+h2 a:visited{
+    color: black;
+    &:hover, &:active { color: orangered; };
+}
+
+h3 {
+    font-family: sans-serif;
+    text-align: left;
+    margin-left: 10%;
+
+    line-height: 1pt;
+    font-size: 21pt;
+    font-weight: bold;
+    cursor: default
+}
+h3 a{
+    text-decoration: none;
+    cursor: default;
+    &:hover, &:active { color: orangered; };
+}
+h3 a:visited{
+    color: black;
+    &:hover, &:active { color: orangered; };
+}
+
+p {
+    color: lawngreen;
+    line-height: 21pt;
+    font-size:15pt;
+    font-family: monospace;
+    margin-left: 5%;
+    margin-right: 5%;
+    text-align: justify;
+
+}
+
+
+a{
+    color:lawngreen;
+    text-decoration: underline; 
+    cursor: default;
+    &:hover, &:active { color: orangered;}
+}
+p a{
+    text-decoration: underline;
+    cursor: default;
+    &:hover, &:active { color: orangered; };
+}
+li {
+    line-height: 21pt;
+    font-size:15pt;
+    font-family: monospace;
+    margin-left: 5%;
+    margin-right: 5%;
+    text-align: justify;
+    
+}
+ul{
+   color:lawngreen;
+
+}
+li a{
+   color:lawngreen;
+    text-decoration: underline; 
+    cursor: default;
+    &:hover, &:active { color: orangered;}
+}
