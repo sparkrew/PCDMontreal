@@ -144,9 +144,10 @@ const sketch = (p) => {
       if (mouseOnCanvas) {
         const dm = p.dist(particles[i].pos.x, particles[i].pos.y, p.mouseX, p.mouseY);
         if (dm < MOUSE_LINK_RADIUS) {
-          const alpha = p.map(dm, 0, MOUSE_LINK_RADIUS, 120, 0);
-          p.stroke(0, 87, 172, alpha);
-          p.strokeWeight(0.8);
+          const alpha = p.map(dm, 0, MOUSE_LINK_RADIUS, 220, 0);
+          const sWeight = p.map(dm, 0, MOUSE_LINK_RADIUS, 4.2, 0.7);
+          p.stroke(240, 8, 194, alpha);
+          p.strokeWeight(sWeight);
           p.line(particles[i].pos.x, particles[i].pos.y, p.mouseX, p.mouseY);
         }
       }
