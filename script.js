@@ -60,12 +60,18 @@ backToTop.addEventListener('click', () => {
 
 const sketch = (p) => {
   let particles = [];
-  const NUM = 260;
-  const MAX_PARTICLES = 340;
+  const DENSITY = 7000; // px² per particle — keeps mobile canvases from feeling crowded
+  const MIN_PARTICLES = 40;
+  const MAX_START_PARTICLES = 180;
+  const MAX_PARTICLES = 220;
   const REPEL_RADIUS = 120;
   const MOUSE_LINK_RADIUS = 150;
   let container;
   let canvasW, canvasH;
+
+  function particleCountFor(w, h) {
+    return Math.round(p.constrain(w * h / DENSITY, MIN_PARTICLES, MAX_START_PARTICLES));
+  }
 
   class Particle {
     constructor(w, h, x, y) {
@@ -107,6 +113,7 @@ const sketch = (p) => {
     canvasH = container.offsetHeight;
     const canvas = p.createCanvas(canvasW, canvasH);
     canvas.parent('p5-bg');
+    const NUM = particleCountFor(canvasW, canvasH);
     for (let i = 0; i < NUM; i++) particles.push(new Particle(canvasW, canvasH));
 
     if (prefersReducedMotion) {
