@@ -1,0 +1,173 @@
+/* ---------- NAV (overlay plein écran) ---------- */
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+
+function openMenu() {
+  navLinks.classList.add('open');
+  navLinks.setAttribute('aria-hidden', 'false');
+  navToggle.setAttribute('aria-expanded', 'true');
+  navToggle.setAttribute('aria-label', 'Fermer le menu');
+  document.body.classList.add('nav-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  navLinks.classList.remove('open');
+  navLinks.setAttribute('aria-hidden', 'true');
+  navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.setAttribute('aria-label', 'Ouvrir le menu');
+  document.body.classList.remove('nav-open');
+  document.body.style.overflow = '';
+}
+
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.contains('open');
+  if (isOpen) closeMenu(); else openMenu();
+});
+
+navLinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', closeMenu);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+    closeMenu();
+    navToggle.focus();
+  }
+});
+
+/* ---------- BACK TO TOP ---------- */
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const backToTop = document.getElementById('back-to-top');
+const heroSection = document.getElementById('accueil');
+const accueilHeading = document.getElementById('accueil-heading');
+
+function updateBackToTop() {
+  const pastHero = heroSection.getBoundingClientRect().bottom <= 0;
+  backToTop.classList.toggle('visible', pastHero);
+  backToTop.setAttribute('aria-hidden', String(!pastHero));
+}
+
+window.addEventListener('scroll', updateBackToTop, { passive: true });
+updateBackToTop();
+
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  accueilHeading.focus();
+});
+
+/* ---------- P5.JS BACKGROUND (Accueil only) ---------- */
+
+const sketch = (p) => {
+  let particles = [];
+  const NUM = 260;
+  const MAX_PARTICLES = 340;
+  const REPEL_RADIUS = 120;
+  const MOUSE_LINK_RADIUS = 150;
+  let container;
+  let canvasW, canvasH;
+
+  class Particle {
+    constructor(w, h, x, y) {
+      this.w = w; this.h = h;
+      this.pos = p.createVector(x !== undefined ? x : p.random(w), y !== undefined ? y : p.random(h));
+      this.angle = p.random(p.TWO_PI);
+      this.speed = p.random(0.3, 0.9);
+      this.r = p.random(1.2, 2.8);
+      this.noiseOff = p.random(1000);
+    }
+    update() {
+      const n = p.noise(this.pos.x * 0.002, this.pos.y * 0.002, this.noiseOff);
+      this.angle = n * p.TWO_PI * 2;
+      this.pos.x += p.cos(this.angle) * this.speed;
+      this.pos.y += p.sin(this.angle) * this.speed;
+
+      const dMouse = p.dist(this.pos.x, this.pos.y, p.mouseX, p.mouseY);
+      if (dMouse < REPEL_RADIUS && dMouse > 0) {
+        const push = p.createVector(this.pos.x - p.mouseX, this.pos.y - p.mouseY);
+        push.setMag(p.map(dMouse, 0, REPEL_RADIUS, 2.4, 0));
+        this.pos.add(push);
+      }
+
+      if (this.pos.x < -10) this.pos.x = this.w + 10;
+      if (this.pos.x > this.w + 10) this.pos.x = -10;
+      if (this.pos.y < -10) this.pos.y = this.h + 10;
+      if (this.pos.y > this.h + 10) this.pos.y = -10;
+    }
+    show() {
+      p.noStroke();
+      p.fill(17, 17, 17, 90);
+      p.circle(this.pos.x, this.pos.y, this.r * 2);
+    }
+  }
+
+  p.setup = () => {
+    container = document.getElementById('p5-bg');
+    canvasW = container.offsetWidth;
+    canvasH = container.offsetHeight;
+    const canvas = p.createCanvas(canvasW, canvasH);
+    canvas.parent('p5-bg');
+    for (let i = 0; i < NUM; i++) particles.push(new Particle(canvasW, canvasH));
+
+    if (prefersReducedMotion) {
+      p.noLoop();
+    }
+  };
+
+  p.draw = () => {
+    p.clear();
+
+    const mouseOnCanvas = p.mouseX >= 0 && p.mouseX <= canvasW && p.mouseY >= 0 && p.mouseY <= canvasH;
+
+    const maxDist = 170;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const d = p.dist(
+          particles[i].pos.x, particles[i].pos.y,
+          particles[j].pos.x, particles[j].pos.y
+        );
+        if (d < maxDist) {
+          const alpha = p.map(d, 0, maxDist, 110, 0);
+          p.stroke(0, 87, 172, alpha);
+          p.strokeWeight(0.8);
+          p.line(particles[i].pos.x, particles[i].pos.y, particles[j].pos.x, particles[j].pos.y);
+        }
+      }
+
+      if (mouseOnCanvas) {
+        const dm = p.dist(particles[i].pos.x, particles[i].pos.y, p.mouseX, p.mouseY);
+        if (dm < MOUSE_LINK_RADIUS) {
+          const alpha = p.map(dm, 0, MOUSE_LINK_RADIUS, 120, 0);
+          p.stroke(0, 87, 172, alpha);
+          p.strokeWeight(0.8);
+          p.line(particles[i].pos.x, particles[i].pos.y, p.mouseX, p.mouseY);
+        }
+      }
+    }
+
+    for (const particle of particles) {
+      particle.update();
+      particle.show();
+    }
+  };
+
+  p.mousePressed = () => {
+    const withinCanvas = p.mouseX >= 0 && p.mouseX <= canvasW && p.mouseY >= 0 && p.mouseY <= canvasH;
+    if (!withinCanvas) return;
+
+    for (let i = 0; i < 4; i++) {
+      particles.push(new Particle(canvasW, canvasH, p.mouseX, p.mouseY));
+    }
+    while (particles.length > MAX_PARTICLES) particles.shift();
+
+    if (prefersReducedMotion) p.redraw();
+  };
+
+  p.windowResized = () => {
+    canvasW = container.offsetWidth;
+    canvasH = container.offsetHeight;
+    p.resizeCanvas(canvasW, canvasH);
+  };
+};
+
+new p5(sketch);
