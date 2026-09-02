@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Processing Community Day</title>
 <meta name="description" content="Processing Community Day - journée de la communauté Processing à l'Université de Montréal, célébrant les 25 ans de la fondation Processing.">
+<meta name="theme-color" id="theme-color-meta" content="#fafaf8">
+<script>
+(function(){
+  try {
+    var stored = localStorage.getItem('pcd-theme');
+    document.documentElement.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,10 +28,20 @@
 <nav id="navbar" aria-label="Navigation principale">
   <div class="nav-inner">
     <a href="#accueil" class="nav-logo">PCD<span class="logo-accent">_</span>MTL<span class="logo-accent">26</span></a>
-    <button id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
-      <span class="nav-toggle-text">Menu</span>
-      <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
-    </button>
+    <div class="nav-controls">
+      <button id="theme-toggle" class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Activer le mode sombre">
+        <span class="theme-toggle-track" aria-hidden="true">
+          <span class="theme-toggle-thumb">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </span>
+        </span>
+      </button>
+      <button id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="nav-toggle-text">Menu</span>
+        <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -64,8 +85,14 @@
       <div class="subsection">
         <h3>Qu'est-ce qu'on fait le 24 octobre pour le PCD de Montréal?</h3>
         <div class="two-col">
-          <p>On se réunit, on partage et on crée des images et des animations avec du logiciel libre.</p>
-          <p>Qu'on soit débutant.e, curieux·ses, expert.es, on se réunit pour partage notre intérêt pour la création visuelle et le code, au campus Mil de l'Université de Montréal.</p>
+          <div>
+            <p>On se retrouve pour créer, expérimenter et partager autour du code créatif.</p>
+            <p>Tout au long de la journée, les participant·es imagineront et programmeront une œuvre visuelle à l'aide de Processing. On code, on échange des idées, on expérimente et on s'entraide, puis on termine la journée en présentant les créations réalisées.</p>
+          </div>
+          <div>
+            <p>Que vous soyez débutant·e, curieux·se ou expérimenté·e, tout le monde est bienvenu. Aucune expérience en programmation n'est nécessaire : il suffit d'avoir envie de découvrir, de créer et de partager.</p>
+            <p>Rendez-vous au campus MIL de l'Université de Montréal!</p>
+          </div>
         </div>
 
 
@@ -329,9 +356,9 @@
     <p class="footer-tag">PCD<span class="logo-accent">_</span>MTL<span class="logo-accent">26</span></p>
     <p class="footer-thanks">Une journée organisée grâce au soutien de</p>
     <div class="footer-logos">
-      <a href="https://umontreal.ca" target="_blank" rel="noopener"><img src="images/logos/logo-udem.svg" alt="Université de Montréal"><span class="visually-hidden"> (s'ouvre dans un nouvel onglet)</span></a>
-      <a href="https://bib.umontreal.ca" target="_blank" rel="noopener"><img src="images/logos/logo-bib.svg" alt="Bibliothèques de l'Université de Montréal"><span class="visually-hidden"> (s'ouvre dans un nouvel onglet)</span></a>
-      <a href="https://ivado.ca" target="_blank" rel="noopener"><img src="images/logos/logo-ivado.svg" alt="IVADO"><span class="visually-hidden"> (s'ouvre dans un nouvel onglet)</span></a>
+      <a href="https://umontreal.ca" target="_blank" rel="noopener"><img src="images/logos/logo-udem.svg" alt="Université de Montréal" class="logo-light"><img src="images/logos/logo-udem-dark.svg" alt="Université de Montréal" class="logo-dark"><span class="visually-hidden"> (s'ouvre dans un nouvel onglet)</span></a>
+      <a href="https://bib.umontreal.ca" target="_blank" rel="noopener"><img src="images/logos/logo-bib.svg" alt="Bibliothèques de l'Université de Montréal" class="logo-light"><img src="images/logos/logo-bib-dark.svg" alt="Bibliothèques de l'Université de Montréal" class="logo-dark"><span class="visually-hidden"> (s'ouvre dans un nouvel onglet)</span></a>
+      <a href="https://ivado.ca" target="_blank" rel="noopener"><img src="images/logos/logo-ivado.svg" alt="IVADO" class="logo-light"><img src="images/logos/logo-ivado-dark.svg" alt="IVADO" class="logo-dark"><span class="visually-hidden"> (s'ouvre dans un nouvel onglet)</span></a>
     </div>
     <p class="footer-copy">Processing Community Day - Journée de la communauté Processing - Université de Montréal - 2026</p>
   </div>

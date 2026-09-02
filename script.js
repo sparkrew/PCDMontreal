@@ -1,3 +1,28 @@
+/* ---------- THEME (mode sombre) — clair par défaut, le choix explicite est mémorisé ---------- */
+const THEME_KEY = 'pcd-theme';
+const themeToggle = document.getElementById('theme-toggle');
+const themeColorMeta = document.getElementById('theme-color-meta');
+let isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+let p5Instance;
+
+function applyTheme(theme, persist) {
+  document.documentElement.setAttribute('data-theme', theme);
+  isDark = theme === 'dark';
+  themeToggle.setAttribute('aria-checked', String(isDark));
+  themeToggle.setAttribute('aria-label', isDark ? 'Désactiver le mode sombre' : 'Activer le mode sombre');
+  if (themeColorMeta) themeColorMeta.setAttribute('content', isDark ? '#121212' : '#fafaf8');
+  if (persist) {
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* localStorage unavailable */ }
+  }
+  if (p5Instance && prefersReducedMotion) p5Instance.redraw();
+}
+
+applyTheme(isDark ? 'dark' : 'light', false);
+
+themeToggle.addEventListener('click', () => {
+  applyTheme(isDark ? 'light' : 'dark', true);
+});
+
 /* ---------- NAV (overlay plein écran) ---------- */
 const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
@@ -102,7 +127,11 @@ const sketch = (p) => {
     }
     show() {
       p.noStroke();
-      p.fill(17, 17, 17, 90);
+      if (isDark) {
+        p.fill(240, 240, 237, 110);
+      } else {
+        p.fill(17, 17, 17, 90);
+      }
       p.circle(this.pos.x, this.pos.y, this.r * 2);
     }
   }
@@ -127,6 +156,7 @@ const sketch = (p) => {
     const mouseOnCanvas = p.mouseX >= 0 && p.mouseX <= canvasW && p.mouseY >= 0 && p.mouseY <= canvasH;
 
     const maxDist = 170;
+    const lineRGB = isDark ? [111, 177, 255] : [0, 87, 172];
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const d = p.dist(
@@ -135,7 +165,7 @@ const sketch = (p) => {
         );
         if (d < maxDist) {
           const alpha = p.map(d, 0, maxDist, 110, 0);
-          p.stroke(0, 87, 172, alpha);
+          p.stroke(lineRGB[0], lineRGB[1], lineRGB[2], alpha);
           p.strokeWeight(0.8);
           p.line(particles[i].pos.x, particles[i].pos.y, particles[j].pos.x, particles[j].pos.y);
         }
@@ -178,4 +208,4 @@ const sketch = (p) => {
   };
 };
 
-new p5(sketch);
+p5Instance = new p5(sketch);
