@@ -141,6 +141,25 @@ if (!prefersReducedMotion) {
   document.querySelectorAll('.accordion details').forEach((el) => new AnimatedDetails(el));
 }
 
+/* ---------- REVEAL ON SCROLL (transition légère entre les blocs) ---------- */
+if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+  const revealTargets = document.querySelectorAll(
+    '#main-content .tag, #main-content h2, #main-content .container > .two-col, #main-content .subsection, #main-content .schedule, #main-content .accordion, #main-content .contact-intro'
+  );
+  revealTargets.forEach((el) => el.classList.add('reveal'));
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+
+  revealTargets.forEach((el) => revealObserver.observe(el));
+}
+
 /* ---------- P5.JS BACKGROUND (Accueil only) ---------- */
 
 const sketch = (p) => {

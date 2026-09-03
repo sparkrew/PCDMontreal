@@ -288,6 +288,11 @@ body.nav-open .theme-icon{color:var(--overlay-bg);}
     transition-duration:.01ms !important;
     transition-delay:0s !important;
   }
+  .reveal{
+    opacity:1 !important;
+    transform:none !important;
+    transition:none !important;
+  }
 }
 
 /* BACK TO TOP */
@@ -349,6 +354,17 @@ body.nav-open .theme-icon{color:var(--overlay-bg);}
   scroll-margin-top:var(--nav-h);
 }
 .section.alt{background:var(--bg-alt);transition:background-color .3s ease;}
+
+/* REVEAL ON SCROLL — class is added by JS only, so content stays visible if JS never runs */
+.reveal{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .6s ease-out, transform .6s ease-out;
+}
+.reveal.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
 
 .container{
   max-width:1200px;margin:0 auto;padding:0 32px;
