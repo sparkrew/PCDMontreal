@@ -1,0 +1,51 @@
+name: Deploy PCD vers studio-bib
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PCD
+        uses: actions/checkout@v4
+        with:
+          path: pcd
+
+      - name: Checkout studio-bib
+        uses: actions/checkout@v4
+        with:
+          repository: bibudem/techno
+          token: ${{ secrets.STUDIO_BIB_TOKEN }}
+          path: studio-bib
+
+      - name: Replace PCD site
+        run: |
+          rm -rf studio-bib/static/pcd
+          mkdir -p studio-bib/static/pcd
+
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            pcd/ studio-bib/static/pcd/
+
+      - name: Commit and push
+        working-directory: studio-bib
+        run: |
+          git config user.name "PCD Deploy Bot"
+          git config user.email "pcd-deploy@users.noreply.github.com"
+
+          git add static/pcd
+
+          if git diff --cached --quiet; then
+            echo "No changes to deploy."
+            exit 0
+          fi
+
+          git commit -m "Update PCD website"
+          git push
