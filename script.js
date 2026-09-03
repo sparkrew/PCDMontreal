@@ -81,6 +81,66 @@ backToTop.addEventListener('click', () => {
   accueilHeading.focus();
 });
 
+/* ---------- FAQ ACCORDION (ouverture/fermeture animée) ---------- */
+if (!prefersReducedMotion) {
+  class AnimatedDetails {
+    constructor(el) {
+      this.el = el;
+      this.summary = el.querySelector('summary');
+      this.animation = null;
+      this.isClosing = false;
+      this.isExpanding = false;
+      this.summary.addEventListener('click', (e) => this.onClick(e));
+    }
+    onClick(e) {
+      e.preventDefault();
+      this.el.style.overflow = 'hidden';
+      if (this.isClosing || !this.el.open) {
+        this.open();
+      } else if (this.isExpanding || this.el.open) {
+        this.shrink();
+      }
+    }
+    closedHeight() {
+      const cs = getComputedStyle(this.el);
+      return this.summary.offsetHeight + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+    }
+    shrink() {
+      this.isClosing = true;
+      const startHeight = `${this.el.offsetHeight}px`;
+      const endHeight = `${this.closedHeight()}px`;
+      if (this.animation) this.animation.cancel();
+      this.animation = this.el.animate({ height: [startHeight, endHeight] }, { duration: 250, easing: 'ease-out' });
+      this.animation.onfinish = () => this.onAnimationFinish(false);
+      this.animation.oncancel = () => { this.isClosing = false; };
+    }
+    open() {
+      this.el.style.height = `${this.el.offsetHeight}px`;
+      this.el.open = true;
+      window.requestAnimationFrame(() => this.expand());
+    }
+    expand() {
+      this.isExpanding = true;
+      const startHeight = `${this.el.offsetHeight}px`;
+      const endHeight = `${this.el.scrollHeight}px`;
+      if (this.animation) this.animation.cancel();
+      this.animation = this.el.animate({ height: [startHeight, endHeight] }, { duration: 250, easing: 'ease-out' });
+      this.animation.onfinish = () => this.onAnimationFinish(true);
+      this.animation.oncancel = () => { this.isExpanding = false; };
+    }
+    onAnimationFinish(open) {
+      this.el.open = open;
+      this.animation = null;
+      this.isClosing = false;
+      this.isExpanding = false;
+      this.el.style.height = '';
+      this.el.style.overflow = '';
+    }
+  }
+
+  document.querySelectorAll('.accordion details').forEach((el) => new AnimatedDetails(el));
+}
+
 /* ---------- P5.JS BACKGROUND (Accueil only) ---------- */
 
 const sketch = (p) => {
