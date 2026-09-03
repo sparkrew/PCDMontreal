@@ -566,7 +566,9 @@ h2{
 
 /* BUTTONS */
 .btn{
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
   font-family:var(--mono);
   font-size:0.9rem;
   padding:14px 32px;
@@ -577,6 +579,7 @@ h2{
 }
 .btn:hover{background:var(--ink);color:var(--bg);transform:translateY(-2px);}
 .btn.large{padding:18px 44px;font-size:1rem;margin:24px 0 16px;}
+.external-icon{width:0.95em;height:0.95em;flex-shrink:0;}
 
 .fine-print{
   font-size:0.85rem;
