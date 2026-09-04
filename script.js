@@ -160,6 +160,31 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
   revealTargets.forEach((el) => revealObserver.observe(el));
 }
 
+/* ---------- PARALLAX LÉGER SUR LA DÉCO (+, −, ;, //, (), [], {}) ---------- */
+if (!prefersReducedMotion) {
+  const SPEEDS = [0.12, 0.18, 0.24, 0.14, 0.2, 0.16, 0.22];
+  const decoData = Array.from(document.querySelectorAll('.deco-mark')).map((el, i) => ({
+    el,
+    speed: SPEEDS[i % SPEEDS.length],
+  }));
+
+  let parallaxTicking = false;
+  function updateParallax() {
+    for (const { el, speed } of decoData) {
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty('--parallax-y', `${rect.top * speed}px`);
+    }
+    parallaxTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!parallaxTicking) {
+      window.requestAnimationFrame(updateParallax);
+      parallaxTicking = true;
+    }
+  }, { passive: true });
+  updateParallax();
+}
+
 /* ---------- P5.JS BACKGROUND (Accueil only) ---------- */
 
 const sketch = (p) => {
