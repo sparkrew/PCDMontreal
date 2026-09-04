@@ -24,6 +24,7 @@ jobs:
           token: ${{ secrets.STUDIO_BIB_TOKEN }}
           ref: main
           path: studio-bib
+          persist-credentials: true
 
       - name: Replace PCD site
         run: |
