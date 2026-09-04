@@ -22,6 +22,7 @@ jobs:
         with:
           repository: bibudem/techno
           token: ${{ secrets.STUDIO_BIB_TOKEN }}
+          ref: main
           path: studio-bib
 
       - name: Replace PCD site
